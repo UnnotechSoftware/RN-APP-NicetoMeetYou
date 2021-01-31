@@ -51,7 +51,8 @@ export const addBookRequest = async(payload) => {
 }
 
 export const editBookRequest = async(id,payload) => {
-  let link = `${link}/${id}`;
+  let url = `${link}/${id}`;
+  console.log(url)
   let response;
   let config = {
     method: 'PATCH',
@@ -63,7 +64,7 @@ export const editBookRequest = async(id,payload) => {
   }
 
   try {
-    let result = await fetch(link, config);
+    let result = await fetch(url, config);
     response = result.status;
   } catch(err){
     response = 400;
