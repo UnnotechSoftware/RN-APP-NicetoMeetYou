@@ -39,7 +39,7 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET ht
 }
 ```
 
-### Add Book [Post] `https://fe-interview-api.unnotech.com/books
+### Add Book [Post] `https://fe-interview-api.unnotech.com/books`
 
 **Request**
 
