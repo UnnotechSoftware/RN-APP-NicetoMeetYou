@@ -24,19 +24,31 @@
 
 ## 頁面需求
 
+- 電腦手機呈現的 UI 相同，請依照螢幕尺寸延展寬度
 - 整個專案會需要兩個頁面
-  - Book List Page
-  - Book Detail Page
-- "Book List" 上的元素我們稱為 "Book Card"，包含圖片和名字，且可以點擊
-- "Book Card" 點擊會連到單一 Book 的 "Book Detail Page"
-- "Book Detail" 會顯示 Book 的價格與庫存數量 (API: `GET https://fe-interview-api.unnotech.com/profile/:bookId`)，並且在數值左右各有一個按鈕，負責做增減功能，不能小於零。
-- "Book Detail" 右下方有一個修改按鈕，按下按鈕後，會將現在設定的數值提交更新 server 上的資料 (API: `PATCH https://fe-interview-api.unnotech.com/profile/:bookId`)。
+  - Book List Page (網址: `/books`)
+  - Book Detail Page (網址: `/books/:bookId`)
+- "Book List" 上的元素我們稱為 "Book Card"，在 "Book List" 中由左到右由上到下排列
+- "Book Card" 必須包含書名以及作者
+- "Book Card" 連結會連到單一 Book 的 "Book Detail Page"
+- 當在 "Book List Page" 時要將現在所選中的 "Book Card" 用不同的顏色或陰影標示出來，且 Header 有新增書本的按鈕可以點擊進到新增頁面。
+- 新增書籍頁面有 名稱(title)、作者(author)、備註(description) 三個欄位，名稱與作者為必填欄位，按下新增按鈕並檢核通過後即可新增書本 (API: `POST https://fe-interview-api.unnotech.com/api/book/`)
+- "Book Detail Page" 會顯示 Book 的author、title 與 description (API: `GET https://fe-interview-api.unnotech.com/api/book/:bookId/`)
+- "Book Detail Page" 右上方有一個修改按鈕，按下按鈕後，會進到修改頁面，修改頁面 有 名稱(title)、作者(author)、備註(description) 三個欄位，名稱與作者為必填欄位，按下修改按鈕並檢核通過後即可修改書本 (API: `PATCH https://fe-interview-api.unnotech.com/api/book/:bookId/`)
 
 ## Wireframe
 
-![](assets/book-list-page.png)
+- 列表
+![](assets/列表.png)
 
-![](assets/book-detail-page.png)
+- 詳情
+![](assets/詳情.png)
+
+- 新增
+![](assets/新增.png)
+
+- 修改
+![](assets/修改.png)
 
 ## 最後
 
@@ -46,12 +58,12 @@
 
 ## 我們所提供的 API
 
-### List Books [GET] `https://fe-interview-api.unnotech.com/books`
+### List Books [GET] `https://fe-interview-api.unnotech.com/api/book/`
 
 **Request**
 
 ```bash
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://fe-interview-api.unnotech.com/books
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://fe-interview-api.unnotech.com/api/book/
 ```
 
 **Response 200**
@@ -59,64 +71,84 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET ht
 ```js
 [
   {
-    id: 1,
-    name: "Flutter/Dart 跨平台 App 開發實務入門",
-    image: "https://cf-assets2.tenlong.com.tw/products/images/000/157/608/medium/ACL060200.jpg?1613558091"
+    "id": 1,
+    "author": "Laurence Moroney",
+    "title": "從程式員到 AI 專家｜寫給程式員的人工智慧與機器學習指南",
+    "description": "如果你想從程式員轉職為AI專家，本書是理想的起點。本書來自Laurence Moroney的成功AI課程，將會帶著你親自動手寫程式，讓你充滿信心地學習重要的主題，你要做的，只是用Python和它的資料表示法及陣列處理法來做實驗。  你會學到如何實作機器學習最常見的場景，包括電腦視覺、自然語言處理(NLP)，以及在web、行動設備、雲端與嵌入式等執行環境中建立序列模型。大多數的機器學習書籍在一開始都會展示大量且令人生畏的高等數學，但這本書提供實用的課程，直接帶你編寫實用的程式。",
+    "created_at": "2021-04-26T02:34:17.303484Z",
+    "updated_at": "2021-04-26T02:34:17.303514Z"
   },
   // ...
 ]
 ```
 
-### Single Book [GET] `https://fe-interview-api.unnotech.com/books/:bookId`
+### Single Book [GET] `https://fe-interview-api.unnotech.com/api/book/:bookId/`
 
 **Request**
 
 ```bash
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://fe-interview-api.unnotech.com/books/1
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://fe-interview-api.unnotech.com/api/book/1/
 ```
 
 **Response 200**
 
 ```js
 {
-  id: 1,
-  name: "Flutter/Dart 跨平台 App 開發實務入門",
-  image: "https://cf-assets2.tenlong.com.tw/products/images/000/157/608/medium/ACL060200.jpg?1613558091"
+  "id": 1,
+  "author": "Laurence Moroney",
+  "title": "從程式員到 AI 專家｜寫給程式員的人工智慧與機器學習指南",
+  "description": "如果你想從程式員轉職為AI專家，本書是理想的起點。本書來自Laurence Moroney的成功AI課程，將會帶著你親自動手寫程式，讓你充滿信心地學習重要的主題，你要做的，只是用Python和它的資料表示法及陣列處理法來做實驗。  你會學到如何實作機器學習最常見的場景，包括電腦視覺、自然語言處理(NLP)，以及在web、行動設備、雲端與嵌入式等執行環境中建立序列模型。大多數的機器學習書籍在一開始都會展示大量且令人生畏的高等數學，但這本書提供實用的課程，直接帶你編寫實用的程式。",
+  "created_at": "2021-04-26T02:34:17.303484Z",
+  "updated_at": "2021-04-26T02:34:17.303514Z"
 }
 ```
 
-### Book Detail [GET] `https://fe-interview-api.unnotech.com/profile/:bookId`
+### Patch Book Detail [Patch] `https://fe-interview-api.unnotech.com/api/book/:bookId/`
 
 **Request**
 
 ```bash
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://fe-interview-api.unnotech.com/profile/1
+curl -X PATCH -H "Content-Type: application/json" -d '{"author": "Moroney"}' "https://fe-interview-api.unnotech.com/api/book/1"
 ```
 
 **Response 200**
 
 ```js
 {
-  id: 1,
-  price: 200,
-  count: 20
+  "id": 1,
+  "author": "Moroney",
+  "title": "從程式員到 AI 專家｜寫給程式員的人工智慧與機器學習指南",
+  "description": "如果你想從程式員轉職為AI專家，本書是理想的起點。本書來自Laurence Moroney的成功AI課程，將會帶著你親自動手寫程式，讓你充滿信心地學習重要的主題，你要做的，只是用Python和它的資料表示法及陣列處理法來做實驗。  你會學到如何實作機器學習最常見的場景，包括電腦視覺、自然語言處理(NLP)，以及在web、行動設備、雲端與嵌入式等執行環境中建立序列模型。大多數的機器學習書籍在一開始都會展示大量且令人生畏的高等數學，但這本書提供實用的課程，直接帶你編寫實用的程式。",
+  "created_at": "2021-04-26T02:34:17.303484Z",
+  "updated_at": "2021-04-26T02:34:17.303514Z"
 }
 ```
 
-### Patch Book Detail [GET] `https://fe-interview-api.unnotech.com/profile/:bookId`
+### Add Book [POST] `https://fe-interview-api.unnotech.com/api/book/`
 
 **Request**
 
 ```bash
-curl -X PATCH -H "Content-Type: application/json" -d '{"price": 300}' "https://fe-interview-api.unnotech.com/profile/1"
+curl -X POST --data "author=TEST&title=New Book&description=TEST" https://fe-interview-api.unnotech.com/api/book/
 ```
 
 **Response 200**
 
 ```js
 {
-  id: 1,
-  price: 300,
-  count: 20
+  "id": 2,
+  "author": "TEST",
+  "title": "New Book",
+  "description": "TEST",
+  "created_at": "2021-04-26T02:34:17.303484Z",
+  "updated_at": "2021-04-26T02:34:17.303514Z"
 }
+```
+
+### Delete Book [Delete] `https://fe-interview-api.unnotech.com/api/book/`
+
+**Request**
+
+```bash
+curl -X "DELETE" https://fe-interview-api.unnotech.com/api/book/2/
 ```
